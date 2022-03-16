@@ -25,8 +25,9 @@ const moviesController = {
         }
     } */
     'detail': (req, res) => {
-        db.Movie.findByPk(req.params.id)
+        db.Movie.findByPk(req.params.id, {include: {all: true}})
             .then(movie => {
+                
                 res.render ('moviesDetail', {movie})
             })
     },
@@ -51,8 +52,14 @@ const moviesController = {
                 res.render ('recommendedMovies', {movies})
             })
     },
-    add: (req, res) => {
-        res.render('moviesAdd')
+    add: async (req, res) => {
+        try {
+            const genres = await db.Genre.findAll()
+            res.render('moviesAdd', {genres})
+        } catch (error) {
+            res.send(error)            
+        }
+        
     },
     create: async function (req, res) {
         try {
@@ -61,7 +68,8 @@ const moviesController = {
                 rating: req.body.rating,
                 awards: req.body.awards,
                 release_date: req.body.release_date,
-                length: req.body.length
+                length: req.body.length,
+                genre_id: req.body.genre
             })
             res.redirect('/movies');
         } catch (error) {
@@ -70,8 +78,10 @@ const moviesController = {
     },
     edit: async function (req, res) {
         try {
-            const Movie = await db.Movie.findByPk(req.params.id);
-            res.render('moviesEdit', {Movie});
+            const Movie = await db.Movie.findByPk(req.params.id, {include: {all: true}});
+            const genres = await db.Genre.findAll()
+
+            res.render('moviesEdit', {Movie, genres});
 
         } catch (error) {
             res.send(error)
@@ -84,7 +94,8 @@ const moviesController = {
                 rating: req.body.rating,
                 awards: req.body.awards,
                 release_date: req.body.release_date,
-                length: req.body.length
+                length: req.body.length,
+                genre_id: req.body.genre
             },{
                 where: {id: req.params.id}
             })

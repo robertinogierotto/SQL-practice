@@ -26,7 +26,16 @@
             <p><input type="date" name="release_date" id="" required></p>
             <label for="length">Length </label>
             <p><input type="number" name="length" id="" required></p>
+            <br>
+            <select name="genre" id="genre">
+                <option value=""> Seleccione un Genero</option>
+                <% genres.forEach( genre => { %>
+                    
+                    <option value="<%= genre.id %>"> <%= genre.name %></option>
 
+                <% }) %>
+            </select>
+            <br>
             <br>
             <p> <button class="botonAgregar" type="submit">Agregar</button>
             
