@@ -30,19 +30,22 @@
             <select name="genre" id="genre">
                 <% if(Movie.genre) { %> 
                     
-                    <option value="<%= Movie.genre_id %>"> <%= Movie.genre.name %></option>
-
-                    <% } else { %> 
-
-                        <option value=""> Seleccione un Genero </option>
-
-                        <% }  %>
-
-                <% genres.forEach( genre => { %>
+                    <% genres.forEach( genre => { %>
                     
-                    <option value="<%= genre.id %>"> <%= genre.name %></option>
+                        <option value="<%= genre.id %>" <% if (Movie.genre.id == genre.id) {%> <%= 'selected' %> <% } %> > <%= genre.name %></option>
+    
 
-                <% }) %>
+                    <% })} else { %> 
+                        
+                        <option value=""> Seleccione un Genero</option>
+                        
+                        <% genres.forEach( genre => { %>
+                    
+                            <option value="<%= genre.id %>"> <%= genre.name %></option>
+        
+                        <% })} %>
+
+                
             </select>
             <br>
             <br>
